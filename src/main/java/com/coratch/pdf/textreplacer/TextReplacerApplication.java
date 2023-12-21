@@ -12,8 +12,6 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream.AppendMode;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.apache.pdfbox.text.TextPosition;
 import org.apache.pdfbox.util.Matrix;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -50,7 +48,7 @@ public class TextReplacerApplication implements CommandLineRunner {
 			}
 			try (PDDocument document = PDDocument.load(pdfFile)) {
 				replaceCount = document.getNumberOfPages();
-				//待替换文本
+				//text to be replaced
 				String text = "xxx";
 				PDPage page = document.getPage(i);
 				TextPositionFinder textPositionFinder = new TextPositionFinder(text);
@@ -58,7 +56,7 @@ public class TextReplacerApplication implements CommandLineRunner {
 				textPositionFinder.setStartPage(i+1);
 				textPositionFinder.setEndPage(i+1);
 				textPositionFinder.writeText(document, new StringWriter());
-				//判断是否存在待替换文本
+				//check whether the text to be replaced exists
 				if (!textPositionFinder.textExists()) {
 					continue;
 				}
@@ -68,8 +66,12 @@ public class TextReplacerApplication implements CommandLineRunner {
 							true, true)) {
 						PDImageXObject pdImage = PDImageXObject.createFromFile(properties.getImage(), document);
 						Matrix textMatrix = textPosition.getTextMatrix();
-						//坐标，数字*7,文字*12
-						contentStream.drawImage(pdImage, textMatrix.getTranslateX() + 12, textMatrix.getTranslateY() - properties.getImageHeight() + (textPosition.getHeight() *2)  , 12, properties.getImageHeight());
+						//offset
+						float xOffset = textPosition.getWidth() * properties.getxOffsetMultiple();
+						//width offset
+						float widthOffset = textPosition.getWidth() * properties.getWidthOffsetMultiple();
+						//draw text
+						contentStream.drawImage(pdImage, textMatrix.getTranslateX() + xOffset, textMatrix.getTranslateY() - properties.getImageHeight() + (textPosition.getHeight() *2), widthOffset, properties.getImageHeight());
 					}
 				}
 				document.save(properties.getPdf());

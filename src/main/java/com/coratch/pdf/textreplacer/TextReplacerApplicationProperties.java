@@ -1,5 +1,6 @@
 package com.coratch.pdf.textreplacer;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -7,21 +8,11 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "textreplacer")
 public class TextReplacerApplicationProperties {
 
+	/**
+	 * The path of pdf file which should be replaced.
+	 */
 	@NotNull
 	private String pdf;
-	
-	private String targetPDF;
-	
-	/**
-	 * The PDF page id which should be used.
-	 */
-	private Integer page = 0;
-	
-	/**
-	 * The text which should be replaced by an image
-	 */
-	@NotNull
-	private String searchText;
 	
 	/**
 	 * The path to the image of which should be placed in the PDF.
@@ -44,8 +35,19 @@ public class TextReplacerApplicationProperties {
 	/**
 	 * The path to the image of which should be created in the PDF.
 	 */
+	@NotNull
 	private String targetImagePath;
-	
+
+	/**
+	 * The x multiple offset of the image in the PDF.
+	 */
+	private int xOffsetMultiple = 0;
+
+	/**
+	 * The width multiple offset of the image in the PDF.
+	 */
+	@Min(1)
+	private int widthOffsetMultiple = 1;
 	
 
 	public String getImage() {
@@ -62,36 +64,6 @@ public class TextReplacerApplicationProperties {
 
 	public void setPdf(String pdf) {
 		this.pdf = pdf;
-	}
-
-	public Integer getPage() {
-		return page;
-	}
-
-	public void setPage(Integer page) {
-		this.page = page;
-	}
-
-	public String getSearchText() {
-		return searchText;
-	}
-
-	public void setSearchText(String searchText) {
-		this.searchText = searchText;
-	}
-
-	public String getTargetPDF() {
-		return targetPDF;
-	}
-
-	public void setTargetPDF(String targetPDF) {
-		this.targetPDF = targetPDF;
-	}
-
-	@Override
-	public String toString() {
-		return "TextReplacerApplicationProperties [pdf=" + pdf + ", targetPDF=" + targetPDF + ", page=" + page
-				+ ", searchText=" + searchText + ", image=" + image + "]";
 	}
 
 	public Integer getImageWidth() {
@@ -117,5 +89,20 @@ public class TextReplacerApplicationProperties {
 	public void setTargetImagePath(String targetImagePath) {
 		this.targetImagePath = targetImagePath;
 	}
-	
+
+	public int getxOffsetMultiple() {
+		return xOffsetMultiple;
+	}
+
+	public void setxOffsetMultiple(int xOffsetMultiple) {
+		this.xOffsetMultiple = xOffsetMultiple;
+	}
+
+	public int getWidthOffsetMultiple() {
+		return widthOffsetMultiple;
+	}
+
+	public void setWidthOffsetMultiple(int widthOffsetMultiple) {
+		this.widthOffsetMultiple = widthOffsetMultiple;
+	}
 }

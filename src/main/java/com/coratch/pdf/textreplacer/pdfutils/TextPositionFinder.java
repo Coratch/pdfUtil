@@ -38,7 +38,7 @@ public class TextPositionFinder extends PDFTextStripper {
 	protected void writeString(String string, List<TextPosition> textPositions) throws IOException {
 		for (TextPosition textPosition : textPositions) {
 			current += textPosition.getUnicode();
-			if (searchText.startsWith(current)) {
+			if (string.contains(searchText) && searchText.startsWith(current)) {
 				found = true;
 			} else {
 				current = "";
