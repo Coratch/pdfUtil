@@ -69,7 +69,7 @@ public class TextReplacerApplication implements CommandLineRunner {
 						//offset
 						float xOffset = textPosition.getWidth() * properties.getxOffsetMultiple();
 						//width offset
-						float widthOffset = textPosition.getWidth() * properties.getWidthOffsetMultiple();
+						float widthOffset = text.length() * textPosition.getWidth();
 						//draw text
 						contentStream.drawImage(pdImage, textMatrix.getTranslateX() + xOffset, textMatrix.getTranslateY() - properties.getImageHeight() + (textPosition.getHeight() *2), widthOffset, properties.getImageHeight());
 					}
